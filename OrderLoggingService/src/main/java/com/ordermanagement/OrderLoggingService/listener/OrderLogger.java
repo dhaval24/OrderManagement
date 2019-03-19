@@ -14,6 +14,8 @@ public class OrderLogger {
 
     @RabbitListener(queues = RabitConfig.QUEUE_ORDERS)
     public void processOrder(Order order) {
-        logger.info("order recieved " + order);
+        logger.info("order received " + order.toString());
+        logger.info("orderNumber " + order.getOrderNumber());
+        logger.info("productId " + order.getProductId());
     }
 }
