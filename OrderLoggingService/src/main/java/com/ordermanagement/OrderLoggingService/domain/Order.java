@@ -8,7 +8,9 @@ public class Order implements Serializable {
 
     private String productId;
 
-    private String parentTraceId;
+    private String correlationId;
+
+    private String spanId;
 
     public String getOrderNumber() {
         return orderNumber;
@@ -26,11 +28,12 @@ public class Order implements Serializable {
         this.productId = productId;
     }
 
-    public String getParentTraceId() {
-        return parentTraceId;
+    public String getCorrelationId() {
+        return correlationId;
     }
 
-    public void setParentTraceId(String parentTraceId) {
-        this.parentTraceId = parentTraceId;
+    public void setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
     }
+
 }
