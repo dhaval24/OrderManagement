@@ -7,6 +7,7 @@ import com.ordermanagement.OrderCreationService.exceptions.OrderNullException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,12 @@ public class OrderService {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendOrder(Order order) throws OrderNullException {
+    public void sendOrder(Order order, CorrelationData correlationData) throws OrderNullException {
         if (order == null) {
             throw new OrderNullException();
         }
         try {
-            this.rabbitTemplate.convertAndSend(RabitConfig.QUEUE_ORDERS, order);
+            this.rabbitTemplate.convertAndSend(RabitConfig.QUEUE_ORDERS, order, correlationData);
 
         } catch (AmqpException e) {
             logger.error("Exception occurred while putting data in queue " + e);

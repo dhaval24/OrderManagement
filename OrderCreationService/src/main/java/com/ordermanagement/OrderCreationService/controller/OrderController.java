@@ -1,14 +1,12 @@
 package com.ordermanagement.OrderCreationService.controller;
 
 import com.microsoft.applicationinsights.TelemetryClient;
-import com.microsoft.applicationinsights.internal.util.DateTimeUtils;
 import com.microsoft.applicationinsights.telemetry.Duration;
 import com.microsoft.applicationinsights.telemetry.RemoteDependencyTelemetry;
-import com.microsoft.applicationinsights.telemetry.RequestTelemetry;
-import com.microsoft.applicationinsights.web.internal.ThreadContext;
 import com.microsoft.applicationinsights.web.internal.correlation.TraceContextCorrelation;
 import com.ordermanagement.OrderCreationService.domain.Order;
 import com.ordermanagement.OrderCreationService.service.OrderService;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,10 +30,10 @@ public class OrderController {
         boolean success = false;
         String traceParent = TraceContextCorrelation.generateChildDependencyTraceparent();
         String childId = TraceContextCorrelation.createChildIdFromTraceparentString(traceParent);
-        order.setCorrelationId(childId);
+        CorrelationData correlationData = new CorrelationData(childId);
         long start = System.currentTimeMillis();
         try {
-            service.sendOrder(order);
+            service.sendOrder(order, correlationData);
             success = true;
         } catch (Exception e) {
             e.printStackTrace();

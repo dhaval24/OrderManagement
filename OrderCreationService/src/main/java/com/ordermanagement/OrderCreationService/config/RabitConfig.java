@@ -1,6 +1,7 @@
 package com.ordermanagement.OrderCreationService.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -35,9 +36,23 @@ public class RabitConfig {
     }
 
     @Bean
+    public ConnectionFactory connectionFactory() {
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+        connectionFactory.setPublisherConfirms(true);
+        connectionFactory.setPublisherReturns(true);
+        return connectionFactory;
+    }
+
+    @Bean
     public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
+        rabbitTemplate.setCorrelationDataPostProcessor((message, correlationData) -> {
+            if (correlationData != null) {
+                message.getMessageProperties().setCorrelationId(correlationData.getId());
+            }
+            return correlationData;
+        });
         return rabbitTemplate;
     }
 }
