@@ -1,7 +1,7 @@
 package com.ordermanagement.OrderCreationService.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ordermanagement.OrderCreationService.config.RabitConfig;
+import com.ordermanagement.OrderCreationService.config.RabbitConfig;
 import com.ordermanagement.OrderCreationService.domain.Order;
 import com.ordermanagement.OrderCreationService.exceptions.OrderNullException;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ public class OrderService {
             throw new OrderNullException();
         }
         try {
-            this.rabbitTemplate.convertAndSend(RabitConfig.QUEUE_ORDERS, order, correlationData);
+            this.rabbitTemplate.convertAndSend(RabbitConfig.QUEUE_ORDERS, order, correlationData);
 
         } catch (AmqpException e) {
             logger.error("Exception occurred while putting data in queue " + e);

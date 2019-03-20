@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabitConfig {
+public class RabbitConfig {
 
     public static final String QUEUE_ORDERS = "orders-queue";
     public static final String EXCHANGE_ORDERS = "orders-exchange";
