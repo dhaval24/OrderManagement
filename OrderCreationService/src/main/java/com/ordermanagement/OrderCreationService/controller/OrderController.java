@@ -1,6 +1,7 @@
 package com.ordermanagement.OrderCreationService.controller;
 
 import com.microsoft.applicationinsights.TelemetryClient;
+import com.microsoft.applicationinsights.internal.util.DateTimeUtils;
 import com.microsoft.applicationinsights.telemetry.Duration;
 import com.microsoft.applicationinsights.telemetry.RemoteDependencyTelemetry;
 import com.microsoft.applicationinsights.telemetry.RequestTelemetry;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/orders")
@@ -27,8 +30,9 @@ public class OrderController {
     @PostMapping
     public void placeOrder(@RequestBody Order order) {
         boolean success = false;
-        RequestTelemetry requestTelemetry = ThreadContext.getRequestTelemetryContext().getHttpRequestTelemetry();
-        order.setCorrelationId(requestTelemetry.getId());
+        String traceParent = TraceContextCorrelation.generateChildDependencyTraceparent();
+        String childId = TraceContextCorrelation.createChildIdFromTraceparentString(traceParent);
+        order.setCorrelationId(childId);
         long start = System.currentTimeMillis();
         try {
             service.sendOrder(order);
@@ -39,8 +43,8 @@ public class OrderController {
             long end = System.currentTimeMillis();
             RemoteDependencyTelemetry rdd = new RemoteDependencyTelemetry("Queue",
                     "Publish", new Duration(end-start), success);
-            String traceParent = TraceContextCorrelation.generateChildDependencyTraceparent();
-            String childId = TraceContextCorrelation.createChildIdFromTraceparentString(traceParent);
+            rdd.setTimestamp(new Date());
+
             rdd.setId(childId);
             telemetryClient.trackDependency(rdd);
         }
