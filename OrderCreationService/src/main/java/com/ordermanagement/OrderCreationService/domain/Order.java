@@ -8,8 +8,6 @@ public class Order implements Serializable {
 
     private String productId;
 
-    private String spanId;
-
     public String getOrderNumber() {
         return orderNumber;
     }
