@@ -1,5 +1,7 @@
 package com.ordermanagement.OrderLoggingService.config;
 
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,11 @@ import org.springframework.messaging.handler.annotation.support.MessageHandlerMe
 public class RabitConfig  implements RabbitListenerConfigurer {
 
     public static final String QUEUE_ORDERS = "orders-queue";
+
+    @Bean
+    Queue ordersQueue() {
+        return QueueBuilder.durable(QUEUE_ORDERS).build();
+    }
 
     @Override
     public void configureRabbitListeners(RabbitListenerEndpointRegistrar rabbitListenerEndpointRegistrar) {

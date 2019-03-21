@@ -1,5 +1,26 @@
-rabbitmq:
-  image: rabbitmq:management
-  ports:
-  - "5672:5672"
-  - "15672:15672"
+version : '3'
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:management
+    ports:
+    - 5672:5672
+    - 15672:15672
+
+  order-creation-service:
+    container_name: order-creation-service
+    build: ./OrderCreationService
+    ports:
+      - 18080:8080
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBIT_HOST: rabbitmq
+
+  order-logging-service:
+    container_name: order-logging-service
+    build: ./OrderLoggingService
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBIT_HOST: rabbitmq
