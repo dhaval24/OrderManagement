@@ -22,20 +22,5 @@ services:
     build: ./OrderLoggingService
     depends_on:
       - rabbitmq
-      - order-creation-service
     environment:
       RABBIT_HOST: rabbitmq
-
-  start_dependencies:
-    image: ubuntu:14.04
-    depends_on:
-    - order-creation-service
-    command: >
-      /bin/bash -c "
-        while ! nc -z order-creation-service 8080;
-        do
-          echo sleeping;
-          sleep 1;
-        done;
-        echo Connected!;
-      "
