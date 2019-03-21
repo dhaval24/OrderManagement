@@ -8,8 +8,6 @@ public class Order implements Serializable {
 
     private String productId;
 
-    private String parentTraceId;
-
     public String getOrderNumber() {
         return orderNumber;
     }
@@ -26,11 +24,4 @@ public class Order implements Serializable {
         this.productId = productId;
     }
 
-    public String getParentTraceId() {
-        return parentTraceId;
-    }
-
-    public void setParentTraceId(String parentTraceId) {
-        this.parentTraceId = parentTraceId;
-    }
 }
