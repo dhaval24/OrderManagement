@@ -52,6 +52,8 @@ public class RabbitConfig {
     public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
+
+        // a CorrelationDataPostProcessor is needed to propagate the correlation id in the message over wire.
         rabbitTemplate.setCorrelationDataPostProcessor((message, correlationData) -> {
             if (correlationData != null) {
                 message.getMessageProperties().setCorrelationId(correlationData.getId());

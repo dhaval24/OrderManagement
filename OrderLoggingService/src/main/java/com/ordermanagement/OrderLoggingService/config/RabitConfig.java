@@ -13,6 +13,9 @@ import org.springframework.messaging.handler.annotation.support.MessageHandlerMe
 @Configuration
 public class RabitConfig  implements RabbitListenerConfigurer {
 
+    /**
+     * The queue to which consumer is attached.
+     */
     public static final String QUEUE_ORDERS = "orders-queue";
 
     @Bean
