@@ -2,10 +2,19 @@ package com.ordermanagement.OrderCreationService.domain;
 
 import java.io.Serializable;
 
+/**
+ * An entity class that represents order.
+ */
 public class Order implements Serializable {
 
+    /**
+     * a unique id used to represent this order
+     */
     private String orderNumber;
 
+    /**
+     * Product associated with the order
+     */
     private String productId;
 
     public String getOrderNumber() {
