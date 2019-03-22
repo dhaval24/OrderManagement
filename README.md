@@ -43,3 +43,6 @@ logs the information on console.
 
 ### Application Map View
 ![Application Map](docs/appmap.PNG)
+
+### Visualize RabbitMQ Metrics on Azure Metrics Explorer
+![Metrics](docs/metrics.PNG)
