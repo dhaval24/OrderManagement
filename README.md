@@ -33,7 +33,7 @@ docker network.
 
 ### Post requests 
 
-`curl -d '{"orderNumber" : "abc123", "productId" : "xyz123"}' -H "Content-Type: application/json" -X POST http://localhost:18080/orders`
+`curl -d '{"productId" : "car123", "productName" : "car"}' -H "Content-Type: application/json" -X POST http://localhost:18080/orders`
 
 This would create a new order message and publish it to RabbitMQ. The consumer service reacts on this message, and
 logs the information on console. 
