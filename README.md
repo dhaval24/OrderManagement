@@ -4,6 +4,7 @@ This repository demonstrates Observability in springboot microservices using Azu
 ## Core Components
 - Order Creation Microservice (Producer Service)- Springboot microservice responsible for creating new orders and 
 pushing events to RabbitMQ.
+- Postgres SQL for persistence.
 - Rabbit MQ - Message Broker to enable asynchronous communication.
 - Order Logging Service (consumer service) - Springboot microservice which reacts on the events published by Order creation
 service and logs the information to console. 
