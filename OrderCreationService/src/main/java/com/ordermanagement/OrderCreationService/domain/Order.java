@@ -1,27 +1,58 @@
 package com.ordermanagement.OrderCreationService.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
  * An entity class that represents order.
  */
+@Entity
 public class Order implements Serializable {
 
     /**
      * a unique id used to represent this order
      */
-    private String orderNumber;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int orderNumber;
 
     /**
      * Product associated with the order
      */
+    @Column(name = "productid")
     private String productId;
 
-    public String getOrderNumber() {
+    /**
+     * Product name
+     */
+    @Column(name = "productname")
+    private String productName;
+
+    protected Order() {
+    }
+
+    public Order(String productId, String productName) {
+        this.productId = productId;
+        this.productName = productName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public int getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(String orderNumber) {
+    public void setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
     }
 
@@ -31,6 +62,11 @@ public class Order implements Serializable {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    @Override
+    public String toString() {
+        return "orderNumber: " + orderNumber + " productId: " + productId + " productName: " + productName;
     }
 
 }

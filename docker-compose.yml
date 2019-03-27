@@ -8,6 +8,16 @@ services:
     - 15672:15672
     # username: guest, password: guest
 
+  postgres:
+    container_name: postgres
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: orderdb
+
   order-creation-service:
     container_name: order-creation-service
     build: ./OrderCreationService
@@ -15,8 +25,10 @@ services:
       - 18080:8080
     depends_on:
       - rabbitmq
+      - postgres
     environment:
       RABBIT_HOST: rabbitmq
+      POSTGRES_HOST: postgres
 
   order-logging-service:
     container_name: order-logging-service
