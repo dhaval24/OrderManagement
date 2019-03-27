@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ordermanagement.OrderCreationService.config.RabbitConfig;
 import com.ordermanagement.OrderCreationService.domain.Order;
 import com.ordermanagement.OrderCreationService.exceptions.OrderNullException;
+import com.ordermanagement.OrderCreationService.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
@@ -22,6 +23,8 @@ public class OrderService {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     public OrderService(RabbitTemplate rabbitTemplate) {
@@ -38,6 +41,10 @@ public class OrderService {
         } catch (AmqpException e) {
             logger.error("Exception occurred while putting data in queue " + e);
         }
+    }
+
+    public Order createOrder(Order order) {
+        return orderRepository.save(order);
     }
 
 }

@@ -27,6 +27,9 @@ public class OrderController {
 
     @PostMapping
     public void placeOrder(@RequestBody Order order) {
+
+        service.createOrder(order);
+
         boolean success = false;
 
         // create a ChildTraceParent from the request parent.
